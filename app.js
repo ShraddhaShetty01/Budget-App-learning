@@ -9,7 +9,29 @@ var budgetController = (function() {
 
 var UIController = (function(){
 
-    //
+
+    var DOMStrings = {
+        inputType : '.add__type',
+        inputDescription : '.add__description',
+        inputValue : '.add__value',
+        inputBtn : '.add__btn'
+    }
+    return {
+        getInput : function(){
+            return {
+              type : document.querySelector(DOMStrings.inputType).value, // will be inc or exp
+              description : document.querySelector(DOMStrings.inputDescription).value,
+              value : document.querySelector(DOMStrings.inputValue).value,
+
+            }; 
+        },
+        
+        // exposing the method DOMStrings 
+        getDOMStrings : function() {
+            return DOMStrings;
+        }
+
+    };
 
 })();
 
@@ -17,7 +39,7 @@ var UIController = (function(){
 // This controller connects the mod-1 & 2
 var Controller = (function(budgetCtrl, UICtrl){
 
-
+    var DOM = UICtrl.getDOMStrings();
 
     document.addEventListener('keypress', function(event){
        
@@ -27,7 +49,8 @@ var Controller = (function(budgetCtrl, UICtrl){
             // To-do
        // 1. get the field input data 
 
-
+             var input = UICtrl.getInput();
+             console.log(input);
 
        //2. Add the item to the budget controller 
 
@@ -42,21 +65,24 @@ var Controller = (function(budgetCtrl, UICtrl){
 
        //5. display the budget on the UI
 
-       console.log('IT WORKS');
+       
     
         }
 
-    document.querySelector('.add__btn').addEventListener('click', ctrlAddItem); // callback is not needed
+    document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem); // callback is not needed
      
     // enter key on the keyborad or any key 
+    document.addEventListener('keypress', function(event) {
+        if(event.keyCode === 13 || event.which === 13){  // event.which is for older browser
+            ctrlAddItem(); 
+        }
 
+    });
         // you can find the keycode number in console when pressing ENTER.
 
             // TO AVOUD DRY - Function Ctrladditem is created
 
-        if(event.keyCode === 13 || event.which === 13){  // event.which is for older browser
-            ctrlAddItem();   
-        }
+         
     });
 
 })(budgetController,UIController);
