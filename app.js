@@ -39,10 +39,19 @@ var UIController = (function(){
 // This controller connects the mod-1 & 2
 var Controller = (function(budgetCtrl, UICtrl){
 
-    var DOM = UICtrl.getDOMStrings();
+    var setupEventListeners = function() {
 
-    document.addEventListener('keypress', function(event){
-       
+        document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem); // callback is not needed
+     
+        // enter key on the keyborad or any key 
+        document.addEventListener('keypress', function(event) {
+            if(event.keyCode === 13 || event.which === 13){  // event.which is for older browser
+                ctrlAddItem(); 
+            }
+        });
+    };
+
+    var DOM = UICtrl.getDOMStrings();
 
         var ctrlAddItem = function() {
 
@@ -50,7 +59,7 @@ var Controller = (function(budgetCtrl, UICtrl){
        // 1. get the field input data 
 
              var input = UICtrl.getInput();
-             console.log(input);
+            //  console.log(input);
 
        //2. Add the item to the budget controller 
 
@@ -67,24 +76,28 @@ var Controller = (function(budgetCtrl, UICtrl){
 
        
     
+        } 
+
+        // public initialization 
+
+        return {
+            init : function() {
+                console.log('Application has started');
+                setupEventListeners();
+            }
         }
 
-    document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem); // callback is not needed
-     
-    // enter key on the keyborad or any key 
-    document.addEventListener('keypress', function(event) {
-        if(event.keyCode === 13 || event.which === 13){  // event.which is for older browser
-            ctrlAddItem(); 
-        }
+   
 
-    });
+  
         // you can find the keycode number in console when pressing ENTER.
 
             // TO AVOUD DRY - Function Ctrladditem is created
-
          
-    });
+    // });
 
 })(budgetController,UIController);
 
 // Separation of Concern - Budgetcontroller and UI controllers
+
+Controller.init();
