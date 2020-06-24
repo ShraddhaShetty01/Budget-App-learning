@@ -1,33 +1,7 @@
 // Module -1
 var budgetController = (function() {
 
-    // Data model for our expenses and income
-
-    // function constructor 
-
-    var Expense = function(id,description,value){
-        this.id = id;
-        this.description = description;
-        this.value = value;
-    };
-    var Income = function(id,description,value){
-        this.id = id;
-        this.description = description;
-        this.value = value;
-    };
-
-
-    // Data structure , instead of arrays 
-    var data = {
-        allItems : {
-          exp : [],
-          inc : []
-        },
-        totals: {
-            exp : 0,
-            inc : 0
-        }
-    }
+    
 
 })(); //IIFE
 
@@ -63,7 +37,7 @@ var UIController = (function(){
 
 // Module -3 - Global app controller
 // This controller connects the mod-1 & 2
-var controller = (function(budgetCtrl, UICtrl){
+var Controller = (function(budgetCtrl, UICtrl){
 
     var setupEventListeners = function() {
 
@@ -126,4 +100,4 @@ var controller = (function(budgetCtrl, UICtrl){
 
 // Separation of Concern - Budgetcontroller and UI controllers
 
-controller.init();
+Controller.init();
