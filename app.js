@@ -189,6 +189,31 @@ var UIController = (function(){
         expensesPercLabel : '.item__percentage'
 
     };
+
+     var formatNumber = function(num,type) {
+
+        /* 
+        + or - before the number 
+     exactly 2 decimal points
+     comma separating thousands 
+      2310.4567 -> + 2,310.46
+      2000 -> + 2,000.00
+        */
+       num = Math.abs(num);
+       num = num.toFixed(2);
+
+       numSplit = num .split('.');
+
+       int = numSplit[0];
+       if(int.length > 3){
+           int = int.substr(0, int.length - 3) + ',' + int.substr(int.length - 3, 3);
+       }
+
+       dec = numSplit[1];
+
+       return ( type === 'exp' ? '-' : '+') + int + '.' + dec;
+    };
+    
     return {
         getInput : function(){
             return {
@@ -216,7 +241,7 @@ var UIController = (function(){
             // Replace the placeholder text with some actual data
             newHtml = html.replace('%id%', obj.id);
             newHtml = newHtml.replace('%description%', obj.description);
-            newHtml = newHtml.replace('%value%', obj.value);
+            newHtml = newHtml.replace('%value%', formatNumber(obj.value, type));
             
             // Insert the HTML into the DOM
             document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
@@ -243,9 +268,13 @@ var UIController = (function(){
 
         displayBudget : function(obj) {
 
-          document.querySelector(DOMStrings.budgetLabel).textContent = obj.budget;
-          document.querySelector(DOMStrings.incomeLabel).textContent = obj.totalInc;
-          document.querySelector(DOMStrings.expenseLabel).textContent = obj.totalExp;
+            var type;
+
+            obj.budget > 0 ? type = 'inc ' : type = 'exp';
+
+          document.querySelector(DOMStrings.budgetLabel).textContent =formatNumber( obj.budget,type);
+          document.querySelector(DOMStrings.incomeLabel).textContent = formatNumber(obj.totalInc, 'inc');
+          document.querySelector(DOMStrings.expenseLabel).textContent = formatNumber(obj.totalExp, 'exp');
 
 
           if(obj.percentage > 0) {
@@ -279,6 +308,7 @@ var UIController = (function(){
             });
 
         },
+
         
         // exposing the method DOMStrings 
         getDOMStrings : function() {
